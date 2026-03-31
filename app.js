@@ -3,6 +3,7 @@ import ejs from "ejs";
 
 const app = express();
 
+app.enable("trust proxy");
 app.engine("ejs", ejs.renderFile);
 app.set("view engine", "ejs");
 app.use(express.static("public"));
