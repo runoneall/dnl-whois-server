@@ -1,0 +1,95 @@
+<%
+const scanData = data.scan || {};
+const nameservers = (data.nameservers || []).map(ns => ({
+  objectClassName: "nameserver",
+  ldhName: ns
+}));
+
+const response = {
+  rdapConformance: [
+    "rdap_level_0",
+    "nodeloc_custom_extension_v1"
+  ],
+  objectClassName: "domain",
+  handle: data.full_domain || "N/A",
+  ldhName: data.full_domain || "N/A",
+  status: [
+    data.status || "inactive"
+  ],
+  links: [
+    {
+      value: data.full_domain || "N/A",
+      rel: "self",
+      href: `${protocol}://${host}/rdap/${data.full_domain}`,
+      type: "application/rdap+json"
+    },
+    {
+      rel: "related",
+      href: `https://icann.org/epp#${data.status || "inactive"}`
+    }
+  ],
+  events: [
+    { eventAction: "registration", eventDate: data.registered_at || "N/A" },
+    { eventAction: "last changed", eventDate: data.registered_at || "N/A" },
+    { eventAction: "expiration", eventDate: data.expires_at || "N/A" },
+    { eventAction: "last update of whois database", eventDate: timestamp }
+  ],
+  entities: [
+    {
+      objectClassName: "entity",
+      roles: ["registrar"],
+      vcardArray: [
+        "vcard",
+        [
+          ["version", {}, "text", "4.0"],
+          ["fn", {}, "text", "Nodeloc Free Domain"]
+        ]
+      ],
+      publicIds: [
+        { type: "IANA Registrar ID", identifier: "Not Provided" }
+      ]
+    },
+    {
+      objectClassName: "entity",
+      roles: ["registrant"],
+      vcardArray: [
+        "vcard",
+        [
+          ["version", {}, "text", "4.0"],
+          ["fn", {}, "text", "REDACTED_FOR_PRIVACY"],
+          ["org", {}, "text", "REDACTED_FOR_PRIVACY"]
+        ]
+      ]
+    }
+  ],
+  nameservers: nameservers,
+  secureDNS: {
+    delegationSigned: false
+  },
+  remarks: [
+    {
+      title: "System Metadata",
+      description: [
+        `Days Until Deletion: ${data.days_until_deletion ?? "null"}`,
+        `Days Until Suspension: ${data.days_until_suspension ?? "null"}`,
+        `First Failed At: ${data.first_failed_at ?? "null"}`,
+        `Suspension Reason: ${data.suspend_reason ?? "null"}`,
+        `Suspended At: ${data.suspended_at ?? "null"}`
+      ]
+    }
+  ],
+  extensionData: {
+    healthAndScan: data.scan ? {
+      overallHealth: scanData.overall_health || "N/A",
+      dnsStatus: scanData.dns_status || "N/A",
+      httpStatus: scanData.http_status || "N/A",
+      sslStatus: scanData.ssl_status || "N/A",
+      safeBrowsing: scanData.safe_browsing_status || "N/A",
+      virusTotal: scanData.virustotal_status || "N/A",
+      uptime: scanData.uptime_percentage ? scanData.uptime_percentage.toFixed(2) + "%" : "N/A",
+      lastScanned: scanData.last_scanned_at || "N/A"
+    } : { status: "No scan data available" }
+  }
+};
+-%>
+<%- JSON.stringify(response, null, 2) %>

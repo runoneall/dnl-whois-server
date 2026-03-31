@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Whois</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        width: 100vw;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="display: flex">
+      <input type="text" id="inputDomain" style="flex: 1" />
+      <button type="button" id="searchDomain">Search</button>
+    </div>
+    <script>
+      const inputDomain = document.getElementById("inputDomain");
+      const searchDomain = document.getElementById("searchDomain");
+
+      searchDomain.onclick = () => {
+        window.location.pathname = `/${inputDomain.value}`;
+      };
+    </script>
+  </body>
+</html>
