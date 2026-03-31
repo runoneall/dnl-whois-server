@@ -17,8 +17,13 @@ app.get("/:domain", async (req, res) => {
   const currentHost = req.get("host");
   res.header("Content-Type", "text/plain; charset=utf-8");
 
+  const domain = req.params.domain;
+  if (!domain) {
+    return res.status(400).send("Error: No domain provided");
+  }
+
   try {
-    const data = await getInfo(req.params.domain);
+    const data = await getInfo(domain);
     if (data.error) {
       return res.status(400).send(`Error: ${data.error}`);
     }
@@ -39,8 +44,15 @@ app.get("/rdap/domain/:domain", async (req, res) => {
   const currentHost = req.get("host");
   res.header("Content-Type", "application/rdap+json; charset=utf-8");
 
+  const domain = req.params.domain;
+  if (!domain) {
+    return res
+      .status(400)
+      .json({ errorCode: 400, title: "Error: No domain provided" });
+  }
+
   try {
-    const data = await getInfo(req.params.domain);
+    const data = await getInfo(domain);
     if (data.error) {
       return res.status(400).send(`Error: ${data.error}`);
     }
