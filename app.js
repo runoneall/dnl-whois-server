@@ -34,7 +34,7 @@ app.get("/:domain", async (req, res) => {
   }
 });
 
-app.get("/rdap/:domain", async (req, res) => {
+app.get("/rdap/domain/:domain", async (req, res) => {
   const currentProtocol = req.protocol;
   const currentHost = req.get("host");
   res.header("Content-Type", "application/rdap+json; charset=utf-8");
