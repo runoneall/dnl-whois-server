@@ -69,4 +69,24 @@ app.get("/rdap/domain/:domain", async (req, res) => {
   }
 });
 
+app.get("/original/domain/:domain", async (req, res) => {
+  res.header("Content-Type", "application/json; charset=utf-8");
+
+  const domain = req.params.domain;
+  if (!domain) {
+    return res
+      .status(400)
+      .json({ errorCode: 400, title: "Error: No domain provided" });
+  }
+
+  try {
+    const data = await getInfo(domain);
+    const formattedData = JSON.stringify(data, null, 2);
+    res.send(formattedData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ errorCode: 500, title: "Internal Server Error" });
+  }
+});
+
 app.listen(3000, () => console.log("Server started"));
