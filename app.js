@@ -13,7 +13,7 @@ const getInfo = async (domain) => {
   return await resp.json();
 };
 
-app.get("/:domain", async (req, res) => {
+app.get("/domain/:domain", async (req, res) => {
   const currentHost = req.get("host");
   res.header("Content-Type", "text/plain; charset=utf-8");
 

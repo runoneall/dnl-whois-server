@@ -40,7 +40,7 @@
     const cliArg = document.getElementById("cliArg");
 
     searchDomain.onclick = () => {
-      window.location.pathname = `/${inputDomain.value}`;
+      window.location.pathname = `/domain/${inputDomain.value}`;
     };
 
     const rdapUrl = new URL(window.location.href);
